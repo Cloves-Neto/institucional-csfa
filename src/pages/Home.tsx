@@ -9,7 +9,6 @@ import {
   FacilitiesBento,
   PartnersSection,
   ContactSection,
-  ExtracurricularesSection,
   CtaSection,
 } from '@/features/home';
 
@@ -25,7 +24,6 @@ export const HomePage = () => {
       <FacilitiesBento />
       <PartnersSection />
       <BlogSection />
-      <ExtracurricularesSection />
       <CtaSection />
       <ContactSection />
     </main>
