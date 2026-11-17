@@ -82,12 +82,32 @@ export const useCalendarState = () => {
       ]
     : [];
 
-  const notasDoMes: [string, any][] = Object.entries({
-    ...Object.fromEntries(
-      Object.entries(feriados2026).map(([k, v]) => [k, [{ label: v.label, cor: '#ef4444' }]])
-    ),
-    ...mergedEventsMap,
-  })
+  const allCalendarKeys = Array.from(
+    new Set([...Object.keys(feriados2026), ...Object.keys(mergedEventsMap)])
+  );
+
+  const combinedCalendarMap: Record<string, Array<{ label: string; cor: string; description?: string; time?: string }>> = {};
+
+  allCalendarKeys.forEach((key) => {
+    const feriado = feriados2026[key];
+    const eventos = mergedEventsMap[key];
+
+    if (feriado && eventos && eventos.length > 0) {
+      const eventosLabels = eventos.map((e) => e.label).join(' • ');
+      combinedCalendarMap[key] = [
+        {
+          label: `${feriado.label} • ${eventosLabels}`,
+          cor: '#ef4444',
+        },
+      ];
+    } else if (feriado) {
+      combinedCalendarMap[key] = [{ label: feriado.label, cor: '#ef4444' }];
+    } else if (eventos) {
+      combinedCalendarMap[key] = eventos;
+    }
+  });
+
+  const notasDoMes: [string, any][] = Object.entries(combinedCalendarMap)
     .filter(([key]) => {
       const [y, m] = key.split('-').map(Number);
       return y === viewYear && m === viewMonth + 1;
@@ -104,5 +124,6 @@ export const useCalendarState = () => {
     setSelectedDate,
     selectedEvents,
     notasDoMes,
+    colegioEventos: mergedEventsMap,
   };
 };

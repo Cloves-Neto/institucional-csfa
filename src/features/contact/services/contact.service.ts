@@ -30,12 +30,24 @@ export class ContactService {
   async sendGeneralContact(payload: GeneralContactPayload): Promise<{ success: boolean; message: string }> {
     try {
       const res = await this.client.post<any>("/contact", payload);
-      if (res && res.success) {
-        return { success: true, message: res.message || "Mensagem enviada com sucesso! Em breve entraremos em contato." };
+      if (res && res.success === false) {
+        return {
+          success: false,
+          message: res.message || "Não foi possível enviar sua mensagem no momento. Tente novamente.",
+        };
       }
-      return { success: true, message: "Sua mensagem foi registrada com sucesso! Retornaremos o mais breve possível." };
-    } catch {
-      return { success: true, message: "Sua mensagem foi registrada com sucesso! Retornaremos o mais breve possível." };
+      return {
+        success: true,
+        message: res?.message || "Mensagem enviada com sucesso! Em breve entraremos em contato.",
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Falha ao enviar a mensagem. Verifique sua conexão e tente novamente.",
+      };
     }
   }
 
@@ -52,12 +64,24 @@ export class ContactService {
         attachmentUrl: payload.attachmentUrl,
       });
 
-      if (res && res.success) {
-        return { success: true, message: res.message || "Currículo e dados enviados com sucesso! Nosso RH analisará sua candidatura." };
+      if (res && res.success === false) {
+        return {
+          success: false,
+          message: res.message || "Não foi possível registrar sua candidatura no momento. Tente novamente.",
+        };
       }
-      return { success: true, message: "Candidatura registrada com sucesso! Nosso RH entrará em contato." };
-    } catch {
-      return { success: true, message: "Candidatura registrada com sucesso! Nosso RH entrará em contato." };
+      return {
+        success: true,
+        message: res?.message || "Currículo e dados enviados com sucesso! Nosso RH analisará sua candidatura.",
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Falha ao enviar sua candidatura. Verifique sua conexão e tente novamente.",
+      };
     }
   }
 }

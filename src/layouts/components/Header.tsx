@@ -14,11 +14,12 @@ interface DropdownProps {
   items: (string | DropdownItem)[];
   isOpen: boolean;
   onToggle: (e: React.MouseEvent) => void;
+  onSelectItem?: () => void;
   isMobile?: boolean;
   hideArrow?: boolean;
 }
 
-const NavDropdown: React.FC<DropdownProps> = ({ label, items, isOpen, onToggle, isMobile, hideArrow }) => {
+const NavDropdown: React.FC<DropdownProps> = ({ label, items, isOpen, onToggle, onSelectItem, isMobile, hideArrow }) => {
   return (
     <div className={cn("relative group nav-dropdown-container", isMobile ? "w-full" : "")}>
       <button 
@@ -55,6 +56,7 @@ const NavDropdown: React.FC<DropdownProps> = ({ label, items, isOpen, onToggle, 
                   href={itemHref} 
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={onSelectItem}
                   className={cn(
                     "flex items-center gap-3 transition-colors text-slate-600 hover:text-brand-blue",
                     isMobile ? "px-6 py-3 text-base border-b border-slate-200/50 hover:bg-slate-200/50 last:border-0" : "px-4 py-2 text-sm hover:bg-slate-50"
@@ -67,6 +69,7 @@ const NavDropdown: React.FC<DropdownProps> = ({ label, items, isOpen, onToggle, 
                 <Link 
                   key={i} 
                   to={itemHref} 
+                  onClick={onSelectItem}
                   className={cn(
                     "flex items-center gap-3 transition-colors text-slate-600 hover:text-brand-blue",
                     isMobile ? "px-6 py-3 text-base border-b border-slate-200/50 hover:bg-slate-200/50 last:border-0" : "px-4 py-2 text-sm hover:bg-slate-50"
@@ -274,6 +277,7 @@ export const Header = () => {
               items={segmentosItems} 
               isOpen={activeDropdown === 'mobile-segmentos'} 
               onToggle={(e) => toggleDropdown('mobile-segmentos', e)} 
+              onSelectItem={() => setMobileMenuOpen(false)}
               isMobile 
             />
 
@@ -282,6 +286,7 @@ export const Header = () => {
               items={diferenciaisItems} 
               isOpen={activeDropdown === 'mobile-diferenciais'} 
               onToggle={(e) => toggleDropdown('mobile-diferenciais', e)} 
+              onSelectItem={() => setMobileMenuOpen(false)}
               isMobile 
             />
 
@@ -290,6 +295,7 @@ export const Header = () => {
               items={institucionalItems} 
               isOpen={activeDropdown === 'mobile-institucional'} 
               onToggle={(e) => toggleDropdown('mobile-institucional', e)} 
+              onSelectItem={() => setMobileMenuOpen(false)}
               isMobile 
             />
 
@@ -298,6 +304,7 @@ export const Header = () => {
               items={servicosItems} 
               isOpen={activeDropdown === 'mobile-servicos'} 
               onToggle={(e) => toggleDropdown('mobile-servicos', e)} 
+              onSelectItem={() => setMobileMenuOpen(false)}
               isMobile 
             />
 
@@ -306,8 +313,17 @@ export const Header = () => {
               items={restritaItems} 
               isOpen={activeDropdown === 'mobile-restrita'} 
               onToggle={(e) => toggleDropdown('mobile-restrita', e)} 
+              onSelectItem={() => setMobileMenuOpen(false)}
               isMobile 
             />
+
+            <Link 
+              to="/noticias" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-4 text-lg font-medium text-brand-navy border-b border-slate-100 flex items-center gap-2"
+            >
+              <Icon icon="lucide:newspaper" className="w-5 h-5" /> Acontece CSFA
+            </Link>
 
             <Link 
               to="/contato" 

@@ -34,7 +34,7 @@ export const GeneralContactForm = () => {
       setSubject('');
       setMessage('');
     } else {
-      setFeedback({ type: 'error', message: 'Não foi possível enviar a mensagem. Tente novamente.' });
+      setFeedback({ type: 'error', message: result.message || 'Não foi possível enviar a mensagem. Tente novamente.' });
     }
   };
 

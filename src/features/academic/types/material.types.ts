@@ -16,6 +16,7 @@ export interface MaterialTurma {
   cor: string;
   bg: string;
   href: string | null;
+  disponivel?: boolean;
   id?: string;
 }
 

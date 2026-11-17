@@ -53,7 +53,7 @@ export const AdmissionsForm = () => {
       setTurma('');
       setNotes('');
     } else {
-      setFeedback({ type: 'error', message: 'Erro ao enviar solicitação de matrícula. Tente novamente.' });
+      setFeedback({ type: 'error', message: result.message || 'Erro ao enviar solicitação de matrícula. Tente novamente.' });
     }
   };
 

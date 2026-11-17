@@ -8,8 +8,8 @@ export const CtaSection = () => {
     e.preventDefault();
     if (!nome || !email) return;
 
-    // Número do WhatsApp (substituir pelo número real)
-    const telefone = '5586999999999';
+    // Número oficial do WhatsApp do Colégio CSFA
+    const telefone = '5511986187723';
     const texto = `Olá! Meu nome é ${nome} (Email: ${email}). Gostaria de conhecer a estrutura do colégio, tirar dúvidas e agendar uma visita.`;
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(texto)}`;
     

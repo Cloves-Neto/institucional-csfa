@@ -4,11 +4,22 @@ import { materialsService } from '../services/materials.service';
 import { gruposMateriais } from '../data/materials.data';
 import type { MaterialGrupo } from '../types/material.types';
 
-export const MaterialsGroupsList = () => {
-  const [grupos, setGrupos] = useState<MaterialGrupo[]>(gruposMateriais);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export interface MaterialsGroupsListProps {
+  initialGroups?: MaterialGrupo[];
+  loading?: boolean;
+}
+
+export const MaterialsGroupsList = ({ initialGroups, loading }: MaterialsGroupsListProps = {}) => {
+  const [grupos, setGrupos] = useState<MaterialGrupo[]>(initialGroups ?? gruposMateriais);
+  const [isLoading, setIsLoading] = useState<boolean>(loading ?? !initialGroups);
 
   useEffect(() => {
+    if (initialGroups) {
+      setGrupos(initialGroups);
+      setIsLoading(Boolean(loading));
+      return;
+    }
+
     let isMounted = true;
     materialsService.getFormattedGroups()
       .then((data) => {
@@ -21,7 +32,7 @@ export const MaterialsGroupsList = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [initialGroups, loading]);
 
   return (
     <div className="space-y-12">

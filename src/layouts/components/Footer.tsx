@@ -42,7 +42,7 @@ export const Footer = () => {
               <li><Link to="/sobre" className="text-sm text-blue-100 hover:text-white transition-colors">Sobre Nós</Link></li>
               <li><Link to="/proposta-pedagogica" className="text-sm text-blue-100 hover:text-white transition-colors">Proposta Pedagógica</Link></li>
               <li><Link to="/contato" className="text-sm text-blue-100 hover:text-white transition-colors">Contato & Localização</Link></li>
-              <li><Link to="/magazine" className="text-sm text-blue-100 hover:text-white transition-colors">Acontece no CSFA</Link></li>
+              <li><Link to="/noticias" className="text-sm text-blue-100 hover:text-white transition-colors">Acontece no CSFA</Link></li>
             </ul>
           </div>
 
@@ -50,7 +50,7 @@ export const Footer = () => {
           <div>
             <h4 className="text-lg font-bold mb-6 text-brand-yellow">Serviços & Família</h4>
             <ul className="space-y-3">
-              <li><Link to="/matriculas" className="text-sm text-blue-100 hover:text-white transition-colors">Matrículas 2026</Link></li>
+              <li><Link to="/matriculas" className="text-sm text-blue-100 hover:text-white transition-colors">Processo de Matrículas</Link></li>
               <li><Link to="/lista-de-materiais" className="text-sm text-blue-100 hover:text-white transition-colors">Lista de Materiais</Link></li>
               <li><Link to="/calendario-escolar" className="text-sm text-blue-100 hover:text-white transition-colors">Calendário Escolar</Link></li>
               <li><Link to="/biblioteca" className="text-sm text-blue-100 hover:text-white transition-colors">Biblioteca CSFA</Link></li>
@@ -65,7 +65,7 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li className="text-sm text-blue-100 flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow mt-1.5 shrink-0" />
-                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                <a href="https://goo.gl/maps/8Vqqd41i6GS2" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   Rua Professor Luís Pardini, 104<br/>São Paulo - SP
                 </a>
               </li>

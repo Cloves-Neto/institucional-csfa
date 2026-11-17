@@ -58,7 +58,7 @@ export const CareersForm = () => {
       setPresentation('');
       setFile(null);
     } else {
-      setFeedback({ type: 'error', message: 'Erro ao enviar candidatura. Tente novamente.' });
+      setFeedback({ type: 'error', message: result.message || 'Erro ao enviar candidatura. Tente novamente.' });
     }
   };
 

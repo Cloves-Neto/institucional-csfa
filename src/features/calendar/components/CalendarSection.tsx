@@ -16,6 +16,7 @@ export const CalendarSection: React.FC = () => {
     setSelectedDate,
     selectedEvents,
     notasDoMes,
+    colegioEventos,
   } = useCalendarState();
 
   return (
@@ -29,6 +30,7 @@ export const CalendarSection: React.FC = () => {
         onNextMonth={nextMonth}
         onGoToToday={goToToday}
         onSelectDate={setSelectedDate}
+        colegioEventos={colegioEventos}
       />
       <MonthEventsList
         viewMonth={viewMonth}

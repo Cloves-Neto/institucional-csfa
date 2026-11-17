@@ -110,9 +110,22 @@ export const NoticiaDetailPage = () => {
 
         {/* Article Body Content */}
         <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-xs">
-          <div className="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line">
-            {post.content}
-          </div>
+          {/<[a-z][\s\S]*>/i.test(post.content || "") ? (
+            <div
+              className="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed space-y-4"
+              dangerouslySetInnerHTML={{
+                __html: (post.content || "")
+                  .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+                  .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+                  .replace(/\son\w+="[^"]*"/gi, "")
+                  .replace(/\son\w+='[^']*'/gi, ""),
+              }}
+            />
+          ) : (
+            <div className="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line">
+              {post.content}
+            </div>
+          )}
 
           {/* Share Section */}
           <div className="mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

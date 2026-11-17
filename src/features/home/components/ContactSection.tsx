@@ -1,6 +1,53 @@
+import { useState, type FormEvent } from 'react';
 import { Icon } from '@iconify/react';
+import { contactService } from '@/features/contact/services/contact.service';
 
 export const ContactSection = () => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('Dúvidas Gerais');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFeedback(null);
+
+    try {
+      const result = await contactService.sendGeneralContact({
+        name,
+        email,
+        phone,
+        subject: subject || 'Contato via Home',
+        message,
+      });
+
+      if (result.success) {
+        setFeedback({ type: 'success', message: result.message });
+        setName('');
+        setPhone('');
+        setEmail('');
+        setSubject('Dúvidas Gerais');
+        setMessage('');
+      } else {
+        setFeedback({
+          type: 'error',
+          message: result.message || 'Não foi possível enviar sua mensagem. Tente novamente em instantes.',
+        });
+      }
+    } catch (err: any) {
+      setFeedback({
+        type: 'error',
+        message: err?.message || 'Erro ao enviar mensagem. Verifique sua conexão e tente novamente.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-24 px-6 max-w-6xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
@@ -8,18 +55,88 @@ export const ContactSection = () => {
         {/* Formulário e Contatos */}
         <div>
           <h2 className="text-3xl font-bold text-brand-navy mb-4">Entre em Contato</h2>
-          <p className="text-slate-500 mb-10">Tire suas dúvidas ou agende uma visita ao nosso colégio.</p>
+          <p className="text-slate-500 mb-8">Tire suas dúvidas ou agende uma visita ao nosso colégio.</p>
 
-          <form className="space-y-4 mb-12">
-            <div className="grid grid-cols-2 gap-4">
-              <input type="text" placeholder="Nome completo" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
-              <input type="text" placeholder="Telefone / WhatsApp" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
+          {feedback && (
+            <div
+              className={`mb-6 p-4 rounded-2xl text-xs font-semibold flex items-center gap-3 ${
+                feedback.type === 'success'
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}
+            >
+              <Icon
+                icon={feedback.type === 'success' ? 'lucide:check-circle-2' : 'lucide:alert-circle'}
+                className="w-5 h-5 shrink-0"
+              />
+              <span>{feedback.message}</span>
             </div>
-            <input type="email" placeholder="E-mail" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
-            <textarea placeholder="Sua mensagem" rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all resize-none"></textarea>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nome completo"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
+              />
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Telefone / WhatsApp"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="E-mail"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"
+              />
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all text-slate-600"
+              >
+                <option value="Dúvidas Gerais">Dúvidas Gerais</option>
+                <option value="Agendamento de Visita">Agendamento de Visita</option>
+                <option value="Informações sobre Matrícula">Informações sobre Matrícula</option>
+                <option value="Secretaria">Secretaria</option>
+              </select>
+            </div>
+            <textarea
+              required
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Sua mensagem"
+              rows={4}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all resize-none"
+            ></textarea>
             
-            <button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl px-6 py-4 transition-colors">
-              Enviar Mensagem
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl px-6 py-4 transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+            >
+              {isSubmitting ? (
+                <>
+                  <Icon icon="lucide:loader-2" className="w-5 h-5 animate-spin" />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Icon icon="lucide:send" className="w-5 h-5" />
+                  Enviar Mensagem
+                </>
+              )}
             </button>
           </form>
 

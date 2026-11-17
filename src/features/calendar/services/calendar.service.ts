@@ -22,23 +22,25 @@ export class CalendarService {
       const res = await this.client.get<any>("/agenda");
       const list = Array.isArray(res) ? res : res?.data || [];
       if (Array.isArray(list) && list.length > 0) {
-        return list.map((e: any) => {
-          let formattedDate = e.date || e.startDate || "2026-01-01";
-          if (formattedDate.includes("T")) {
-            formattedDate = formattedDate.split("T")[0];
-          }
-          return {
-            id: e.id,
-            title: e.title,
-            date: formattedDate,
-            time: e.time || "08:00",
-            type: e.type || "EVENTO",
-            status: e.status || "CONFIRMADO",
-            location: e.location || "Colégio CSFA",
-            description: e.description || "",
-            targetAudience: e.targetAudience,
-          };
-        });
+        return list
+          .filter((e: any) => String(e.status || "CONFIRMADO").toUpperCase() !== "CANCELADO")
+          .map((e: any) => {
+            let formattedDate = e.date || e.startDate || "2026-01-01";
+            if (formattedDate.includes("T")) {
+              formattedDate = formattedDate.split("T")[0];
+            }
+            return {
+              id: e.id,
+              title: e.title,
+              date: formattedDate,
+              time: e.time || "08:00",
+              type: e.type || "EVENTO",
+              status: e.status || "CONFIRMADO",
+              location: e.location || "Colégio CSFA",
+              description: e.description || "",
+              targetAudience: e.targetAudience,
+            };
+          });
       }
       return FALLBACK_EVENTS;
     } catch {

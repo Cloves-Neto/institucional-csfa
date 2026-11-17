@@ -1,11 +1,20 @@
 import { calendarService } from "./calendar.service";
 
+function parseLocalDate(dateStr: string): Date {
+  const clean = (dateStr || "2026-01-01").split("T")[0];
+  const [year, month, day] = clean.split("-").map(Number);
+  if (!year || !month || !day) {
+    return new Date();
+  }
+  return new Date(year, month - 1, day);
+}
+
 export async function downloadDynamicCalendarPdf(year: number = 2026) {
   try {
     const events = await calendarService.getAll();
     
     // Sort events by date ascending
-    const sortedEvents = [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const sortedEvents = [...events].sort((a, b) => parseLocalDate(a.date).getTime() - parseLocalDate(b.date).getTime());
 
     // Group events by Month
     const monthsMap: { [monthName: string]: any[] } = {};
@@ -19,7 +28,7 @@ export async function downloadDynamicCalendarPdf(year: number = 2026) {
     });
 
     sortedEvents.forEach((ev) => {
-      const dateObj = new Date(ev.date);
+      const dateObj = parseLocalDate(ev.date);
       const mName = monthNames[dateObj.getMonth()];
       if (monthsMap[mName]) {
         monthsMap[mName].push(ev);
@@ -172,7 +181,7 @@ export async function downloadDynamicCalendarPdf(year: number = 2026) {
                         ? '<div style="color: #94a3b8; font-style: italic; font-size: 10px;">Atividades letivas regulares.</div>'
                         : mEvents
                             .map((ev) => {
-                              const day = new Date(ev.date).getDate().toString().padStart(2, "0");
+                              const day = parseLocalDate(ev.date).getDate().toString().padStart(2, "0");
                               return `
                                 <div class="event-item">
                                   <span class="event-date">${day}/${(monthNames.indexOf(m) + 1).toString().padStart(2, "0")}</span>

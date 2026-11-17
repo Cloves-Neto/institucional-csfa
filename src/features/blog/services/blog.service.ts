@@ -43,8 +43,8 @@ export class BlogService {
       excerpt: raw.excerpt || (raw.content ? raw.content.slice(0, 160) + "..." : ""),
       content: raw.content || "",
       coverImageId: raw.coverImageId || raw.coverImage || "/posts/post-1-robotica.jpg",
-      date: raw.createdAt || raw.publishedAt
-        ? new Date(raw.createdAt || raw.publishedAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
+      date: raw.publishedAt || raw.createdAt
+        ? new Date(raw.publishedAt || raw.createdAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })
         : raw.date || "Setembro, 2026",
       tag: rawTag,
       author: authorName,
@@ -60,6 +60,7 @@ export class BlogService {
         limit: params?.limit ?? 50,
       };
       if (params?.search) queryParams.search = params.search;
+      if (params?.tag) queryParams.tag = params.tag;
       if (params?.page) queryParams.page = params.page;
 
       const res = await this.client.get<any>("/posts", { params: queryParams });

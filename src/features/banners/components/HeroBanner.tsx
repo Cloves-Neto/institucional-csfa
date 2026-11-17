@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Icon } from '@iconify/react';
@@ -54,9 +55,9 @@ export const HeroBanner = () => {
             <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-brand-blue hover:text-white transition-all duration-300" aria-label="YouTube">
               <Icon icon="mdi:youtube" className="w-6 h-6" />
             </a>
-            <a href="/contato" className="ml-2 px-8 py-3 bg-brand-blue text-white font-bold rounded-full hover:brightness-110 transition-all uppercase tracking-wide">
+            <Link to="/contato" className="ml-2 px-8 py-3 bg-brand-blue text-white font-bold rounded-full hover:brightness-110 transition-all uppercase tracking-wide">
               Entre em Contato
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -87,9 +88,9 @@ export const HeroBanner = () => {
                   {content}
                 </a>
               ) : (
-                <div key={slide.id} className="flex-[0_0_100%] min-w-0 cursor-pointer" onClick={() => window.location.href = slide.targetUrl!}>
+                <Link key={slide.id} to={slide.targetUrl} className="flex-[0_0_100%] min-w-0 block cursor-pointer">
                   {content}
-                </div>
+                </Link>
               );
             }
 

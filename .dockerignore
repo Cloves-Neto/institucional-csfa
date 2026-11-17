@@ -1,0 +1,14 @@
+node_modules/
+dist/
+docs/
+.env
+.env.*
+!.env.example
+npm-debug.log
+yarn-error.log
+.git/
+.gitignore
+.agents/
+.gemini/
+.vscode/
+*.md
